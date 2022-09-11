@@ -1,12 +1,26 @@
 package cafeItems;
 
-public class Muffin extends Item{
+import database.ItemsTable;
+import holder.Stock;
 
-	String name  = "Muffin";
-	double price = 3.50;
-	int quantity;
-	int id = 2;
+public class Muffin extends Item{
 	
+	private static String name  = "Muffin";
+	private static double price = 3.50;
+	private static int quantity;
+	private static int id = 6825;
+	
+	Stock coffee = (q)->{
+		Stock.updateStock(new Muffin(), q);	
+	};
+	
+	static {
+		try {
+			quantity =	ItemsTable.setQuantity(6825);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	@Override
 	public double getPrice() {
@@ -49,16 +63,22 @@ public class Muffin extends Item{
 	
 	
 	
-/**	
+
 	public String toString() {
 		return "$"+price+" "+name;	
 	}
-**/
+
 	@Override
 	public int hashCode() {
 		return id;
 	}
 	
-
+	@Override
+    public boolean equals(Object o) {
+		if((o instanceof Muffin) && (((Muffin) o).id == this.id)) {
+			return true;
+		}
+       return false;
+	}
 	
 }
