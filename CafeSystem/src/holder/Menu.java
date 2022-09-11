@@ -9,8 +9,6 @@ public class Menu {
 	Coffee getCoffee(String size, int additive) {
 		return new Coffee();
 	}
-
-	Muffin muffin;
 	
 	Muffin getMuffin() {
 		return new Muffin();

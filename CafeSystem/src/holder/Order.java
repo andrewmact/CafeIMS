@@ -6,10 +6,7 @@ import cafeItems.Coffee;
 import cafeItems.Item;
 
 
-
-
 public class Order {
-	
 	
 	double totalPrice = 0;
 	int totalQuantity = 0;
@@ -22,15 +19,11 @@ public class Order {
 	void add(int quantity, Item i) {
 		order.put(i, quantity);
 		totalPrice += i.getPrice()*quantity;
-		
-		System.out.println(totalPrice);
 	}
 	
 	void remove(Item i) {
 		int quantity = order.remove(i);
 		totalPrice -= i.getPrice()*quantity;
-		
-		System.out.println(totalPrice);
 	}
 	
 	
@@ -44,8 +37,8 @@ public class Order {
 		System.out.println("Total Price: $"+totalPrice);
 	}
 	
-	boolean purchaseOrder() {
+	boolean purchaseOrder(String payment) {
 		
-		return false;
+		return true;
 	}
 }

@@ -1,11 +1,26 @@
 package cafeItems;
 
-public class Mug extends Item {
+import database.ItemsTable;
+import holder.Stock;
 
-	String name  = "Mug";
-	double price = 10.99;
-	int quantity;
-	int id = 3;
+public class Mug extends Item {
+	
+	private static String name  = "Mug";
+	private static double price = 10.99;
+	private static int quantity;
+	private static int id = 3344;
+	
+	Stock coffee = (q)->{
+		Stock.updateStock(new Mug(), q);	
+	};
+	
+	static {
+		try {
+			quantity =	ItemsTable.setQuantity(3344);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	
 
 	@Override
@@ -58,5 +73,11 @@ public class Mug extends Item {
 	public int hashCode() {
 		return id;
 	}
-		
+	@Override
+    public boolean equals(Object o) {
+		if((o instanceof Mug) && (((Mug) o).id == this.id)) {
+			return true;
+		}
+       return false;
+	}
 }
