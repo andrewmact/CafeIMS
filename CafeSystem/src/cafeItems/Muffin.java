@@ -10,13 +10,17 @@ public class Muffin extends Item{
 	private static int quantity;
 	private static int id = 6825;
 	
-	Stock coffee = (q)->{
-		Stock.updateStock(new Muffin(), q);	
+	Stock muffin = (q)->{
+		boolean isOrdered = Stock.updateStock(new Muffin(), q);	
+		
+		if(isOrdered) {
+			quantity += q;
+		} 
 	};
 	
 	static {
 		try {
-			quantity =	ItemsTable.setQuantity(6825);
+			quantity =	ItemsTable.getQuantity(6825);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -37,25 +41,46 @@ public class Muffin extends Item{
 		return quantity;
 	}
 	@Override
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
+	@Override
 	public int getID() {
 		return id;
 	}
 
+	
 	@Override
-	public void setQuantity(int q) {
-		if(quantity == 0) {
-			quantity = q;
+	public boolean heldQuantity(int quantity) {
+		if(this.quantity >= quantity) {
+			return true;
 		}
 		else {
-			quantity += q;
+			System.out.println("Stock difference is "+this.quantity+" - "+quantity+" = "+(this.quantity - quantity));
+			return false;
 		}
 	}
-
 	
+	@Override
+	public boolean updateQuantity(int quantity) {
+		
+		if(heldQuantity(quantity)) {
+			this.quantity -= quantity;
+		}
+		else {
+			return false;
+		}
+		
+		if(this.quantity == 0) {
+			muffin.order(10);
+		}
+		return true;
+	}
 	
-	
-	
-	
+	@Override
+	public void orderQuantity(int quantity) {
+		muffin.order(quantity);
+	}
 	
 	
 	

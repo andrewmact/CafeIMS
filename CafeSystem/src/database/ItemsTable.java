@@ -83,23 +83,18 @@ public class ItemsTable extends DatabaseConnect{
 	 * Update the quantity of a give Item
 	 */
 	public static void updateQuantity(Item i, int quantity) {
-		String query = "UPDATE Items SET Quantity = "+quantity+" WHERE ID = "+i.getID();
 		
 		try(Connection con = getConnection();) {
 			
 			Statement stmt = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-			ResultSet rs = stmt.executeQuery("SELECT Items"
-											+ "WHERE ID = "+i.getID());
+			ResultSet rs = stmt.executeQuery("SELECT * FROM Items WHERE ID = "+i.getID());
 				rs.next();
-					int currentQuantity = rs.getInt("Quantity");
-					quantity += currentQuantity;
+				//	int currentQuantity = rs.getInt("Quantity");
 					rs.updateInt("Quantity", quantity);
 					rs.updateRow();
 
 			rs.close();
 			stmt.close();
-			
-			throw new SQLException();
 		} 
 		catch(SQLException sqlE) {
 			sqlE.printStackTrace();
@@ -107,15 +102,16 @@ public class ItemsTable extends DatabaseConnect{
 	}
 	
 	/**
-	 * Set the quantity of a give Item
+	 * Get the quantity of a give Item
 	 */
-	public static int setQuantity(int itemNo) {
+	public static int getQuantity(int itemNo) {
 		
 		try(Connection con = getConnection();) {
 			
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT Items"
-											+ "WHERE ID = "+itemNo);
+			ResultSet rs = stmt.executeQuery("SELECT Quantity"
+											+ " FROM Items"
+											+ " WHERE ID = "+itemNo);
 				rs.next();
 				int quantity = rs.getInt("quantity");
 
@@ -129,4 +125,7 @@ public class ItemsTable extends DatabaseConnect{
 			return 0;
 		}
 	}
+	
+	
+	
 }

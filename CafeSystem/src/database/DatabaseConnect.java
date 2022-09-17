@@ -12,12 +12,33 @@ import java.sql.SQLException;
 
 	public static Connection getConnection() {
 		
-		try(Connection con = DriverManager.getConnection(url, username, password)){
+		try{
+			Connection con = DriverManager.getConnection(url, username, password);
 			return con;
-		} catch (SQLException sql) {
+		} 
+		
+		catch (SQLException sql) {
 			sql.printStackTrace();
 			return null;
 		} 
 		    
 	}
 }
+
+   /**
+   static private String user = "root";
+		static private String pwd = "jav5B3An?@";
+		static private String url ="jdbc:mysql://localhost:3306/bmsDB";
+
+		public static Connection connectDB() {
+			try {
+				Connection con = DriverManager.getConnection(url, user, pwd);
+				return con;
+			}
+
+			catch (SQLException sql) {
+				sql.printStackTrace();
+				return null;
+			}
+		}
+   **/
