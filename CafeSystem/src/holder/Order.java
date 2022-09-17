@@ -1,8 +1,9 @@
 package holder;
 
+import java.text.DecimalFormat;
 import java.util.HashMap;
+import java.util.Map.Entry;
 
-import cafeItems.Coffee;
 import cafeItems.Item;
 
 
@@ -12,33 +13,63 @@ public class Order {
 	int totalQuantity = 0;
 	HashMap<Item, Integer> order;
 	
-	Order(){
+	private static final DecimalFormat df = new DecimalFormat("0.00");
+	
+	public Order(){
 		order = new HashMap<Item, Integer>();
 	}
 	
-	void add(int quantity, Item i) {
-		order.put(i, quantity);
-		totalPrice += i.getPrice()*quantity;
+	public void add(int quantity, Item i) {
+		
+		if(i.heldQuantity(quantity)) {
+			order.put(i, quantity);
+			totalPrice += i.getPrice()*quantity;
+		}
 	}
 	
-	void remove(Item i) {
+	public void remove(Item i) {
 		int quantity = order.remove(i);
 		totalPrice -= i.getPrice()*quantity;
 	}
 	
 	
-	double getTotal(){
+	public double getTotal(){
 		return totalPrice;
 	}
 	
 	
-	void displayOrder() {
+	public void displayOrder() {
 		order.entrySet().forEach(System.out::println);
-		System.out.println("Total Price: $"+totalPrice);
+		System.out.println("Total Price: $"+df.format(totalPrice));
 	}
 	
-	boolean purchaseOrder(String payment) {
+	public boolean purchaseOrder(String payment) {
+		boolean paid = false;
 		
-		return true;
+		switch(payment) {
+		case "Visa": paid = true;
+			break;
+		case "MasterCard": paid = true;
+			break;
+		case "Cash": paid = true;
+			break;
+		}	
+		if(paid) {
+		checkoutItems();
+		displayOrder();
+		}
+		return paid;
+	}
+	
+	Item item;
+	public void checkoutItems() {
+		
+		order.entrySet().stream().forEach((entry)->{
+		item = entry.getKey();
+		int q = entry.getValue();
+	
+			item.updateQuantity(q);
+	});
+						
 	}
 }

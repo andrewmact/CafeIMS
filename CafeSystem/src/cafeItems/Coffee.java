@@ -20,7 +20,7 @@ public class Coffee extends Item {
 	
 	static {
 		try {
-			quantity =	ItemsTable.setQuantity(2233);
+			quantity =	ItemsTable.getQuantity(2233);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -38,7 +38,12 @@ public class Coffee extends Item {
 
 	@Override
 	public int getQuantity() {
+		quantity = ItemsTable.getQuantity(2233);
 		return quantity;
+	}
+	@Override
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
 	}
 	@Override
 	public int getID() {
@@ -46,8 +51,35 @@ public class Coffee extends Item {
 	}
 	
 	@Override
-	public void setQuantity(int q) {
-			quantity += q;
+	public boolean heldQuantity(int quantity) {
+		if(this.quantity >= quantity) {
+			return true;
+		}
+		else {
+			System.out.println("Stock difference is "+this.quantity+" - "+quantity+" = "+(this.quantity - quantity));
+			return false;
+		}
+	}
+	@Override
+	public boolean updateQuantity(int quantity) {
+		
+		if(heldQuantity(quantity)) {
+			this.quantity -= quantity;
+			ItemsTable.updateQuantity(new Coffee(), this.quantity);
+		}
+		else {
+			return false;
+		}
+		
+		if(this.quantity == 0) {
+			coffee.order(10);
+		}
+		return true;
+	}
+	
+	@Override
+	public void orderQuantity(int quantity) {
+		coffee.order(quantity);
 	}
 	
 	

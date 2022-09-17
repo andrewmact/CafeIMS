@@ -25,13 +25,14 @@ public class OrdersTable extends DatabaseConnect{
 			Statement stmt = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
 			ResultSet rs = stmt.executeQuery("SELECT * FROM Orders");
 			
-			rs.next();
+			rs.moveToInsertRow();
 			rs.updateInt("itemID", i.getID());
 			rs.updateInt("quantity", quantity);
 			Date today = Date.valueOf(LocalDate.now());
 			rs.updateDate("orderDate", today);
-			
 			int orderNumber = rs.getInt("orderID");
+			rs.insertRow();
+			
 			
 			rs.close();
 			stmt.close();
@@ -50,7 +51,7 @@ public class OrdersTable extends DatabaseConnect{
 			ResultSet rs = stmt.executeQuery("SELECT * FROM Orders WHERE itemID = "+i.getID());
 			
 			System.out.println(i.getName()+" Order list");
-			
+		
 			while(rs.next()) {
 				int orderId = rs.getInt("orderID");
 				int quantity = rs.getInt("quantity");
